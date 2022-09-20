@@ -1,7 +1,12 @@
 <template>
   <div>
     <h3>Список</h3>
-    <post-item v-for="post in posts" v-bind:key="post.id" :post="post" />
+    <post-item
+      v-for="post in posts"
+      v-bind:key="post.id"
+      :post="post"
+      @remove="$emit('remove', post)"
+    />
   </div>
 </template>
 
@@ -18,6 +23,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

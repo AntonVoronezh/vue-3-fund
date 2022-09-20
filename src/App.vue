@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <post-form @create="createPost" />
-    <post-list :posts="posts" />
+    <post-list :posts="posts" @remove="removePost"/>
   </div>
 </template>
 
@@ -27,8 +27,8 @@ export default {
     createPost(posts) {
       this.posts.push(posts);
     },
-    inputTitle(event) {
-      this.title = event.target.value;
+    removePost(post) {
+      this.posts = this.posts.filter((el) => el.id !== post.id);
     },
   },
 };
