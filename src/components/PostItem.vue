@@ -4,14 +4,14 @@
       <div><strong>Название: </strong> {{ post.title }}</div>
       <div><strong>Описание: </strong>{{ post.body }}</div>
     </div>
-    <div class="post-btns"><mu-button>удалить</mu-button></div>
+    <div class="post-btns"><my-button>удалить</my-button></div>
   </div>
 </template>
 
 <script>
-import MuButton from "@/components/UI/MuButton";
+
 export default {
-  components: {MuButton},
+
   props: {
     post: {
       type: Object,

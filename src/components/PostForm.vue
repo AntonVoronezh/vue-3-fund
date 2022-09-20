@@ -1,26 +1,27 @@
 <template>
   <form @submit.prevent>
     <h4>создание поста</h4>
-    <input
+    <my-input
       v-model="post.title"
       class="input"
       type="text"
       placeholder="название"
     />
-    <input
+    <my-input
       v-model="post.body"
       class="input"
       type="text"
       placeholder="описание"
     />
-    <mu-button class="btn" @click="createPost">создать</mu-button>
+    <my-button class="btn" @click="createPost">создать</my-button>
   </form>
 </template>
 
 <script>
-import MuButton from "@/components/UI/MuButton";
+import MyInput from "@/components/UI/MuInput";
+import MyButton from "@/components/UI/MuButton";
 export default {
-  components: { MuButton },
+  components: {MyButton, MyInput},
   data() {
     return {
       post: {
@@ -44,12 +45,6 @@ export default {
 </script>
 
 <style scoped>
-.input {
-  width: 100%;
-  border-collor: teal;
-  padding: 10px;
-  margin-bottom: 5px;
-}
 
 form {
   display: flex;
