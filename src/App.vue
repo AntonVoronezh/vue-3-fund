@@ -1,10 +1,14 @@
 <template>
   <div class="app">
     <h1>страница с постами</h1>
-    <my-button @click="dialogVisible = true">создать пост</my-button>
+    <div class="app-btns">
+      <my-button @click="dialogVisible = true">создать пост</my-button>
+      <my-select v-model="selectedSort" :options="sortOptions" />
+    </div>
     <my-dialog v-model:show="dialogVisible">
       <post-form @create="createPost" />
     </my-dialog>
+    <div v-if="isPostsLoading">Загрузка...</div>
     <post-list :posts="posts" @remove="removePost" />
   </div>
 </template>
@@ -13,9 +17,12 @@
 import PostForm from "@/components/PostForm";
 import PostList from "@/components/PostList";
 import MyDialog from "@/components/UI/MyDialod";
+import axios from "axios";
+import MySelect from "@/components/UI/MySelect";
 
 export default {
   components: {
+    MySelect,
     MyDialog,
     PostForm,
     PostList,
@@ -28,6 +35,12 @@ export default {
         { id: 3, title: "title 3", body: "body 3" },
       ],
       dialogVisible: false,
+      isPostsLoading: true,
+      selectedSort: "",
+      sortOptions: [
+        { value: "title", name: "по названию" },
+        { value: "body", name: "по описанию" },
+      ],
     };
   },
   methods: {
@@ -38,9 +51,22 @@ export default {
     removePost(post) {
       this.posts = this.posts.filter((el) => el.id !== post.id);
     },
-    async fetchUsers(){
-
-    }
+    async fetchPosts() {
+      try {
+        setTimeout(async () => {
+          const responce = await axios.get(
+            "https://jsonplaceholder.typicode.com/posts?_limit=10"
+          );
+          this.isPostsLoading = false;
+          this.posts = responce.data;
+        }, 100);
+      } catch (e) {
+        console.log(e); // eslint-disable-line
+      }
+    },
+  },
+  mounted() {
+    this.fetchPosts();
   },
 };
 </script>
@@ -54,5 +80,10 @@ export default {
 
 .app {
   padding: 20px;
+}
+
+.app-btns {
+  display: flex;
+  justify-content: space-between;
 }
 </style>
