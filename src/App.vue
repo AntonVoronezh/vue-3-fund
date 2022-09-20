@@ -38,7 +38,7 @@ export default {
     removePost(post) {
       this.posts = this.posts.filter((el) => el.id !== post.id);
     },
-    fetchUsers(){
+    async fetchUsers(){
 
     }
   },
