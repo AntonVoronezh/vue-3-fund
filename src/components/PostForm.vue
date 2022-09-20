@@ -13,12 +13,14 @@
       type="text"
       placeholder="описание"
     />
-    <button class="btn" @click="createPost">создать</button>
+    <mu-button class="btn" @click="createPost">создать</mu-button>
   </form>
 </template>
 
 <script>
+import MuButton from "@/components/UI/MuButton";
 export default {
+  components: { MuButton },
   data() {
     return {
       post: {
@@ -52,13 +54,5 @@ export default {
 form {
   display: flex;
   flex-direction: column;
-}
-
-.btn {
-  margin-top: 15px;
-  align-self: flex-end;
-  background: none;
-  padding: 10px 15px;
-  border: 1px solid teal;
 }
 </style>
