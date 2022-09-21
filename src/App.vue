@@ -11,7 +11,15 @@
     </my-dialog>
     <div v-if="isPostsLoading">Загрузка...</div>
     <div class="page-wrap">
-      <div class="page" v-for="page in totalPage" :key="page">{{ page }}</div>
+      <div
+        class="page"
+        v-for="pageNum in totalPage"
+        :key="pageNum"
+        :class="{ 'current-page': pageNum === page }"
+        @click="changePage(pageNum)"
+      >
+        {{ pageNum }}
+      </div>
     </div>
     <post-list :posts="sortedAndSearchedPosts" @remove="removePost" />
   </div>
@@ -81,11 +89,18 @@ export default {
         console.log(e); // eslint-disable-line
       }
     },
+    changePage(num) {
+      this.page = num;
+    },
   },
   mounted() {
     this.fetchPosts();
   },
   watch: {
+    page() {
+      this.fetchPosts();
+
+    },
     selectedSort() {
       // this.posts.sort((a, b) => {
       //   return a[newValue].localeCompare(b[newValue]);
@@ -132,5 +147,9 @@ export default {
   border: 1px solid black;
   padding: 10px;
   margin-right: 5px;
+}
+
+.current-page {
+  border: 2px solid teal;
 }
 </style>
