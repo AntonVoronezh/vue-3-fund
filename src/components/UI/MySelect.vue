@@ -1,5 +1,5 @@
 <template>
-  // eslint-disable-next-line vue/no-mutating-props
+<!--  eslint-disable-next-line vue/no-mutating-props-->
   <select v-model="modelValue" @change="changeOption">
     <option disabled value="">Выберите</option>
     <option v-for="option in options" :key="option.value" :value="option.value">
