@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <h1>страница с постами</h1>
-    <my-input placeholder="поиск" v-model="searchQuery"/>
+    <my-input placeholder="поиск" v-model="searchQuery" />
     <div class="app-btns">
       <my-button @click="dialogVisible = true">создать пост</my-button>
       <my-select v-model="selectedSort" :options="sortOptions" />
@@ -10,6 +10,9 @@
       <post-form @create="createPost" />
     </my-dialog>
     <div v-if="isPostsLoading">Загрузка...</div>
+    <div class="page-wrap">
+      <div class="page" v-for="page in totalPage" :key="page">{{ page }}</div>
+    </div>
     <post-list :posts="sortedAndSearchedPosts" @remove="removePost" />
   </div>
 </template>
@@ -43,6 +46,9 @@ export default {
         { value: "title", name: "по названию" },
         { value: "body", name: "по описанию" },
       ],
+      page: 1,
+      limit: 10,
+      totalPage: 0,
     };
   },
   methods: {
@@ -57,10 +63,19 @@ export default {
       try {
         setTimeout(async () => {
           const responce = await axios.get(
-            "https://jsonplaceholder.typicode.com/posts?_limit=10"
+            "https://jsonplaceholder.typicode.com/posts",
+            {
+              params: {
+                _page: this.page,
+                _limit: this.limit,
+              },
+            }
           );
           this.isPostsLoading = false;
           this.posts = responce.data;
+          this.totalPage = Math.ceil(
+            responce.headers["x-total-count"] / this.limit
+          );
         }, 100);
       } catch (e) {
         console.log(e); // eslint-disable-line
@@ -83,9 +98,11 @@ export default {
         return a[this.selectedSort]?.localeCompare(b[this.selectedSort]);
       });
     },
-    sortedAndSearchedPosts () {
-      return this.sortedPosts.filter(el => el.title.includes(this.searchQuery))
-    }
+    sortedAndSearchedPosts() {
+      return this.sortedPosts.filter((el) =>
+        el.title.includes(this.searchQuery)
+      );
+    },
   },
 };
 </script>
@@ -104,5 +121,16 @@ export default {
 .app-btns {
   display: flex;
   justify-content: space-between;
+}
+
+.page-wrap {
+  display: flex;
+  margin: 15px 0;
+}
+
+.page {
+  border: 1px solid black;
+  padding: 10px;
+  margin-right: 5px;
 }
 </style>
